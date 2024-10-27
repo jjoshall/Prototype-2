@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void Update()
+    void FixedUpdate()
     {
         HandleMovement();
         HandleJump();
@@ -37,15 +37,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void HandleMovement()
-    {
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
+     private void HandleMovement()
+     {
+          float moveX = Input.GetAxis("Horizontal");
+          float moveZ = Input.GetAxis("Vertical");
 
-        Vector3 movement = (transform.right * moveX + transform.forward * moveZ).normalized * moveSpeed;
-        rb.MovePosition(rb.position + movement * Time.deltaTime);
-    }
+          Vector3 movement = (transform.right * moveX + transform.forward * moveZ).normalized * moveSpeed;
 
+          rb.MovePosition(rb.position + movement * Time.deltaTime);
+     }
+
     private void HandleJump()
     {
         if (Input.GetKeyDown(KeyCode.Space))
