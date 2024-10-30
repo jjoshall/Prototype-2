@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-          if (Input.GetKeyDown(KeyCode.Space))
+          if (Input.GetButtonDown("Jump"))
           {
                jumpRequested = true;
           }
@@ -55,7 +55,12 @@ public class PlayerController : MonoBehaviour
 
           Vector3 movement = (transform.right * moveX + transform.forward * moveZ).normalized * moveSpeed;
 
-          rb.MovePosition(rb.position + movement * Time.deltaTime);
+          Vector3 velocity = rb.velocity;
+
+          velocity.x = movement.x;
+          velocity.z = movement.z;
+
+          rb.velocity = velocity;
      }
 
     private void HandleJump()
