@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     private float yawRotation = 0f;
     private float pitchRotation = 0f;
 
+    bool isGrounded;
+    private bool jumpRequested = false;
+
     public bool canRotate = true; // Control whether player can rotate with the mouse
 
     void Start()
@@ -24,7 +27,15 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void FixedUpdate()
+    private void Update()
+    {
+          if (Input.GetKeyDown(KeyCode.Space))
+          {
+               jumpRequested = true;
+          }
+     }
+
+     void FixedUpdate()
     {
         HandleMovement();
         HandleJump();
@@ -38,7 +49,7 @@ public class PlayerController : MonoBehaviour
     }
 
      private void HandleMovement()
-     {
+     {        
           float moveX = Input.GetAxis("Horizontal");
           float moveZ = Input.GetAxis("Vertical");
 
@@ -49,12 +60,19 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        // check if player is grounded
+        isGrounded = Physics.Raycast(transform.position, -transform.up, 1.1f);
+
+        if (jumpRequested && isGrounded)
         {
+            Debug.Log("Jumping");
             Vector3 jumpDirection = -Physics.gravity.normalized;
             rb.AddForce(jumpDirection * jumpForce, ForceMode.Impulse);
+            Debug.Log($"Jump Force: {jumpForce}, Gravity Magnitude: {Physics.gravity.magnitude}, Jump Direction: {jumpDirection}");
         }
-    }
+
+        jumpRequested = false;
+     }
 
     private void HandleMouseRotation()
     {
