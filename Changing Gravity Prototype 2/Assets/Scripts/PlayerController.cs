@@ -94,6 +94,7 @@ public class PlayerController : MonoBehaviour
         pitchRotation -= mouseY;
         pitchRotation = Mathf.Clamp(pitchRotation, -90f, 90f);
 
+        
         playerCamera.localRotation = Quaternion.Euler(pitchRotation, 0f, 0f);
     }
 }

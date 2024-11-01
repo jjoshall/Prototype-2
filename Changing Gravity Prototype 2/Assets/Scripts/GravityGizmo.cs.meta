@@ -3,7 +3,9 @@ guid: b054a308d75d8714aae7a6b1f402141f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - gizmoUI: {instanceID: 0}
+  - playerScript: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
