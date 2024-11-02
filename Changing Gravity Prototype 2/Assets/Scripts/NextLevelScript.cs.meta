@@ -1,11 +1,9 @@
 fileFormatVersion: 2
-guid: b054a308d75d8714aae7a6b1f402141f
+guid: d00c709cd34046141a3ce54b3d69f97f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - gizmoUI: {instanceID: 0}
-  - playerScript: {instanceID: 0}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
