@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-          if (Input.GetButtonDown("Jump"))
+          if (Input.GetKeyDown(KeyCode.Space))
           {
                jumpRequested = true;
           }
@@ -55,12 +55,7 @@ public class PlayerController : MonoBehaviour
 
           Vector3 movement = (transform.right * moveX + transform.forward * moveZ).normalized * moveSpeed;
 
-          Vector3 velocity = rb.velocity;
-
-          velocity.x = movement.x;
-          velocity.z = movement.z;
-
-          rb.velocity = velocity;
+          rb.MovePosition(rb.position + movement * Time.deltaTime);
      }
 
     private void HandleJump()
@@ -94,7 +89,6 @@ public class PlayerController : MonoBehaviour
         pitchRotation -= mouseY;
         pitchRotation = Mathf.Clamp(pitchRotation, -90f, 90f);
 
-        
         playerCamera.localRotation = Quaternion.Euler(pitchRotation, 0f, 0f);
     }
 }
