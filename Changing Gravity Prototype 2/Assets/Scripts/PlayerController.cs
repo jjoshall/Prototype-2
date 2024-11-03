@@ -7,40 +7,30 @@ public class PlayerController : MonoBehaviour
     public float mouseSensitivity = 2f;
     public Transform playerCamera;
 
+    public Transform groundCheck;
+    public float groundDistance = 0.4f;
+    public LayerMask groundMask;
+
     private Rigidbody rb;
     private float yawRotation = 0f;
     private float pitchRotation = 0f;
-
-    bool isGrounded;
-    private bool jumpRequested = false;
-
-    public bool canRotate = true; // Control whether player can rotate with the mouse
+    private bool isGrounded;
+    public bool canRotate = true;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
         playerCamera.localRotation = Quaternion.Euler(pitchRotation, 0f, 0f);
-
     }
 
-    private void Update()
+    void FixedUpdate()
     {
-          if (Input.GetButtonDown("Jump"))
-          {
-               jumpRequested = true;
-          }
-     }
-
-     void FixedUpdate()
-    {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         HandleMovement();
         HandleJump();
 
-        // Only rotate if canRotate is true
         if (canRotate)
         {
             HandleMouseRotation();
@@ -48,36 +38,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-     private void HandleMovement()
-     {        
-          float moveX = Input.GetAxis("Horizontal");
-          float moveZ = Input.GetAxis("Vertical");
+    private void HandleMovement()
+    {
+        float moveX = Input.GetAxis("Horizontal");
+        float moveZ = Input.GetAxis("Vertical");
 
-          Vector3 movement = (transform.right * moveX + transform.forward * moveZ).normalized * moveSpeed;
+        Vector3 movement = (transform.right * moveX + transform.forward * moveZ).normalized * moveSpeed;
+        rb.MovePosition(rb.position + movement * Time.deltaTime);
+    }
 
-          Vector3 velocity = rb.velocity;
-
-          velocity.x = movement.x;
-          velocity.z = movement.z;
-
-          rb.velocity = velocity;
-     }
-
     private void HandleJump()
     {
-        // check if player is grounded
-        isGrounded = Physics.Raycast(transform.position, -transform.up, 1.1f);
-
-        if (jumpRequested && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            Debug.Log("Jumping");
             Vector3 jumpDirection = -Physics.gravity.normalized;
             rb.AddForce(jumpDirection * jumpForce, ForceMode.Impulse);
-            Debug.Log($"Jump Force: {jumpForce}, Gravity Magnitude: {Physics.gravity.magnitude}, Jump Direction: {jumpDirection}");
         }
-
-        jumpRequested = false;
-     }
+    }
 
     private void HandleMouseRotation()
     {
@@ -94,7 +71,6 @@ public class PlayerController : MonoBehaviour
         pitchRotation -= mouseY;
         pitchRotation = Mathf.Clamp(pitchRotation, -90f, 90f);
 
-        
         playerCamera.localRotation = Quaternion.Euler(pitchRotation, 0f, 0f);
     }
 }
